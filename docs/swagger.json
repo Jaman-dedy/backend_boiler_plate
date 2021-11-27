@@ -1,0 +1,1088 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "2U To Others.",
+      "version": "1.0.0",
+      "title": "2U To Others",
+      "termsOfService": "https://2u.money/",
+      "contact": {
+        "email": "jonathan.rwabahizi@gmail.com.io"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+    },
+    "basePath": "/api/v1",
+    "tags": [
+      {
+        "name": "home",
+        "description": "home"
+      },
+      {
+        "name": "Cogebank",
+        "description": "Cogebank endpoints"
+      },
+      {
+        "name": "ENEO",
+        "description": "ENEO endpoints"
+      },
+      {
+        "name": "PayPal",
+        "description": "PayPal endpoints"
+      },
+      {
+        "name": "BIG",
+        "description": "Bank Islamique De Guinée"
+      },
+      {
+        "name": "UBA - B2B",
+        "description": "UBA bank to bank"
+      }
+    ],
+    "paths": {
+      "/home": {
+        "get": {
+          "tags": ["home"],
+          "summary": "Welcome message",
+          "produces": ["application/json"],
+          "responses": {
+            "200": {
+              "description": "Welcome message",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 200
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Welcome to 2U To Others"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/cogebank/validate-account": {
+        "post": {
+          "tags": ["Cogebank"],
+          "summary": "Validate account",
+          "description": "Validate account",
+          "produces": ["application/json"],
+          "consumes": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Account to be verified",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "required": ["accountNumber", "bankId"],
+                "properties": {
+                  "accountNumber": {
+                    "type": "string",
+                    "example": "00001-0123456789-01"
+                  },
+                  "bankId": {
+                    "type": "string",
+                    "example": "123"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 200
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Account is valid"
+                  },
+                  "isValid": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "accountName": {
+                    "type": "string",
+                    "example": "Mansa Mousa"
+                  },
+                  "data": {
+                    "type": "object",
+                    "example": {
+                      "reply": "ACTIVE",
+                      "tid": 123456,
+                      "refid": 123456,
+                      "currency": "USD",
+                      "acctype": "Wallet",
+                      "acctno": "0987654321",
+                      "accname": "Mansa Mousa",
+                      "retcode": 0
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 400
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Account is not valid"
+                  },
+                  "isValid": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "object",
+                    "example": {
+                      "retcode": null,
+                      "reply": null
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/cogebank/transfer-money": {
+        "post": {
+          "tags": ["Cogebank"],
+          "summary": "Transfer money",
+          "description": "Transfer money",
+          "produces": ["application/json"],
+          "consumes": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Transaction details",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "required": ["creditAccount", "creditAccountName", "currency", "amount", "bankId", "description"],
+                "properties": {
+                  "creditAccount": {
+                    "type": "string",
+                    "example": "00001-0123456789-01"
+                  },
+                  "creditAccountName": {
+                    "type": "string",
+                    "example": "Mansa Mousa"
+                  },
+                  "debitAccount": {
+                    "type": "string",
+                    "example": "00001-0123456789-02"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "example": "ABC"
+                  },
+                  "amount": {
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "bankId": {
+                    "type": "string",
+                    "example": "123"
+                  },
+                  "refId": {
+                    "type": "integer",
+                    "example": 123
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Transfer money to Mansa Mousa"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 200
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Successful transaction"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "data": {
+                    "type": "object",
+                    "example": {
+                      "reply": "Operation successful",
+                      "tid": "123456",
+                      "atid": "123457",
+                      "refid": 123,
+                      "branch": "HEAD OFFICE",
+                      "dco": "2019-12-05",
+                      "retcode": "01"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 400
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Transaction failed"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "object",
+                    "example": {
+                      "retcode": "02",
+                      "reply": "Transaction failed"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/eneo": {
+        "post": {
+          "tags": ["ENEO"],
+          "summary": "POST request router",
+          "description": "Route post request to ENEO APIs",
+          "produces": ["application/json"],
+          "consumes": ["application/json", "application/x-www-form-urlencoded"],
+          "parameters": [
+            {
+              "name": "url",
+              "in": "query",
+              "description": "ENEO endpoint",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "authType",
+              "in": "query",
+              "description": "Authentication type(Basic or Bearer)",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Account to be verified",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "example": {
+                  "amount": 3797,
+                  "counterCode": "678506344",
+                  "paymentMethod": "E_Bills",
+                  "status": "success",
+                  "billNumber": "235787008"
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 200
+                  },
+                  "data": {
+                    "type": "object",
+                    "example": {
+                      "code": 200,
+                      "message": "Your payment has been initiated",
+                      "data": {
+                        "sequenceId": "a11a3eed-c031-44e0-9276-38bf5ba2ad9a",
+                        "message": "Transaction has been registered",
+                        "status": "Pending"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 400
+                  },
+                  "error": {
+                    "type": "object",
+                    "example": {
+                      "status": 400,
+                      "error": {
+                        "code": 400,
+                        "message": "Bill with bill Number 014382847334not found",
+                        "data": null
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized. Incorrect headers",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 401
+                  },
+                  "error": {
+                    "type": "object",
+                    "example": {
+                      "timestamp": "2020-06-25T10:26:52.410+00:00",
+                      "status": 401,
+                      "error": "Unauthorized",
+                      "message": "",
+                      "path": "/eneo-pay/oauth/token"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        },
+        "get": {
+          "tags": ["ENEO"],
+          "summary": "GET request router",
+          "description": "Route get request to ENEO APIs",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "name": "url",
+              "in": "query",
+              "description": "ENEO endpoint",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "authType",
+              "in": "query",
+              "description": "Authentication type(Basic or Bearer)",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 200
+                  },
+                  "data": {
+                    "type": "object",
+                    "example": {
+                      "code": 200,
+                      "message": "Your payment has been initiated",
+                      "data": ["Operational", "Suspended", "Deleted", "Pending"]
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized. Incorrect headers",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 401
+                  },
+                  "error": {
+                    "type": "object",
+                    "example": {
+                      "timestamp": "2020-06-25T10:26:52.410+00:00",
+                      "status": 401,
+                      "error": "Unauthorized",
+                      "message": "",
+                      "path": "/eneo-pay/oauth/token"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/eneo/login": {
+        "post": {
+          "tags": ["ENEO"],
+          "summary": "Login",
+          "description": "Authenticate to the API to acquire authentication token to access subsequent endpoint",
+          "produces": ["application/json"],
+          "consumes": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Account to be verified",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "required": ["username", "password"],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "admin"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "sevenpayadmin"
+                  },
+                  "clientId": {
+                    "type": "string",
+                    "example": "seven-pay-client"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 200
+                  },
+                  "data": {
+                    "type": "object",
+                    "example": {
+                      "access_token": "bbc32f70-e49a-43d0-abf0-257ecf763458",
+                      "token_type": "bearer",
+                      "refresh_token": "fdf77c05-e42f-4510-a015-6d90e984929d",
+                      "expires_in": 43199,
+                      "scope": "read write.trust"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 400
+                  },
+                  "error": {
+                    "type": "object",
+                    "example": {
+                      "code": 400,
+                      "message": "Account not found with username aaa",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized. Incorrect headers",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 401
+                  },
+                  "error": {
+                    "type": "object",
+                    "example": {
+                      "timestamp": "2020-06-25T10:26:52.410+00:00",
+                      "status": 401,
+                      "error": "Unauthorized",
+                      "message": "",
+                      "path": "/eneo-pay/oauth/token"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/paypal/charge": {
+        "post": {
+          "tags": ["PayPal"],
+          "summary": "Initiate wallet top up",
+          "description": "Initiate wallet top up",
+          "produces": ["application/json"],
+          "consumes": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Account to be verified",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "required": ["amount", "accountNumber", "authToken"],
+                "properties": {
+                  "amount": {
+                    "type": "int32",
+                    "example": 20
+                  },
+                  "redirectUrl": {
+                    "type": "string",
+                    "example": "http://localhost"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "example": "USD",
+                    "enum": [""]
+                  },
+                  "accountNumber": {
+                    "type": "string",
+                    "example": "USD-02-JOHNTHEDOE"
+                  },
+                  "authToken": {
+                    "type": "string",
+                    "example": "kdjfdkfjdkjfdkfjkfdjfdkfjfkdjfdkfjfkj"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Use the checkout url to complete the payment",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 200
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Account is valid"
+                  },
+                  "isValid": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "accountName": {
+                    "type": "string",
+                    "example": "Mansa Mousa"
+                  },
+                  "data": {
+                    "type": "object",
+                    "example": {
+                      "id": 1,
+                      "amount": 40,
+                      "currency": "USD",
+                      "checkout_url": "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=EC-6HJ99213GG1812841",
+                      "acctype": "Wallet",
+                      "accname": "Mansa Mousa",
+                      "retcode": 0
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 400
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Account is not valid"
+                  },
+                  "isValid": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "error": {
+                    "type": "object",
+                    "example": {
+                      "retcode": null,
+                      "reply": null
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/big/login": {
+        "post": {
+          "tags": ["BIG"],
+          "summary": "Login",
+          "description": "Authenticate to the API to acquire authentication token to access subsequent endpoint",
+          "produces": ["application/json"],
+          "consumes": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Account to be verified",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "consumerId": {
+                    "type": "string",
+                    "example": "c8730a98-f1cb-11e6-af89-fd20b48e1b50"
+                  },
+                  "consumerSecret": {
+                    "type": "string",
+                    "example": "26828449a33f5739367306eb335329b6"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 200
+                  },
+                  "data": {
+                    "type": "object",
+                    "example": {
+                      "code": 2000,
+                      "message": "Version OK",
+                      "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+                      "salt": "$2a$10$AixagMaoEwiLA1Sf9CYGwu"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 400
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Bad request"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Unauthorized",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 403
+                  },
+                  "error": {
+                    "type": "object",
+                    "example": {
+                      "code": 4008,
+                      "message": "Version inconnue"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/big/transaction/{transactionId}/{sequenceId}": {
+        "get": {
+          "tags": ["BIG"],
+          "summary": "Get transaction status",
+          "description": "Get transaction status",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "name": "transactionId",
+              "in": "path",
+              "description": "transaction reference",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "sequenceId",
+              "in": "path",
+              "description": "transaction unique ID",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 200
+                  },
+                  "data": {
+                    "type": "object",
+                    "example": {
+                      "code": 500,
+                      "message": "Echec virement",
+                      "externalid": "REF4848734",
+                      "retourvirement": "",
+                      "sequence": "IM2803000050",
+                      "ol_trx_code": "NULL",
+                      "ol_transaction_id": null,
+                      "ol_error_code": "0",
+                      "os_message": null,
+                      "status": "ENCOURS"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 400
+                  },
+                  "error": {
+                    "type": "object",
+                    "example": {
+                      "code": 4008,
+                      "message": "Application Corrompue. Veuillez installer une application agreee a partir des stores."
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/big/transaction/status": {
+        "post": {
+          "tags": ["BIG"],
+          "summary": "Get transaction status",
+          "description": "Get transaction status",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Account to be verified",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "transactionId": {
+                    "type": "string",
+                    "description": "transaction reference",
+                    "example": "REF4848734"
+                  },
+                  "sequenceId": {
+                    "type": "string",
+                    "description": "transaction unique ID",
+                    "example": "IM2803000050"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 200
+                  },
+                  "data": {
+                    "type": "object",
+                    "example": {
+                      "code": 500,
+                      "message": "Echec virement",
+                      "externalid": "REF4848734",
+                      "retourvirement": "",
+                      "sequence": "IM2803000050",
+                      "ol_trx_code": "NULL",
+                      "ol_transaction_id": null,
+                      "ol_error_code": "0",
+                      "os_message": null,
+                      "status": "ENCOURS"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 400
+                  },
+                  "error": {
+                    "type": "object",
+                    "example": {
+                      "code": 4008,
+                      "message": "Application Corrompue. Veuillez installer une application agreee a partir des stores."
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/big/transfer": {
+        "post": {
+          "tags": ["BIG"],
+          "summary": "Transfer funds",
+          "description": "Transfer funds",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Transaction data",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "integer",
+                    "description": "Amount to be sent",
+                    "example": 10
+                  },
+                  "debitAccount": {
+                    "type": "string",
+                    "description": "Account to debit",
+                    "example": "OPERATIONS"
+                  },
+                  "creditAccount": {
+                    "type": "string",
+                    "description": "Account to credit",
+                    "example": "TRUST"
+                  },
+                  "creditAccountName": {
+                    "type": "string",
+                    "description": "Account to credit",
+                    "example": ""
+                  },
+                  "transactionId": {
+                    "type": "string",
+                    "description": "External transaction ID",
+                    "example": "123456789"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "description": "Currency",
+                    "example": "GNF"
+                  },
+                  "bankId": {
+                    "type": "string",
+                    "description": "Bank ID",
+                    "example": ""
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "description",
+                    "example": "Transfer to Kunta"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 200
+                  },
+                  "data": {
+                    "type": "object",
+                    "example": {
+                      "code": 200,
+                      "message": "Demande de virement effectue",
+                      "externalid": "REF1166010612829",
+                      "retourvirement": "Demande de virement effectue",
+                      "sequence": "IM0204000001",
+                      "ol_trx_code": "719802",
+                      "ol_transaction_id": "133",
+                      "ol_error_code": "0",
+                      "os_message": "4343",
+                      "status": null
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "example": 400
+                  },
+                  "error": {
+                    "type": "object",
+                    "example": {
+                      "code": 4008,
+                      "message": "Application Corrompue. Veuillez installer une application agreee a partir des stores."
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      }
+    }
+  }
+  
