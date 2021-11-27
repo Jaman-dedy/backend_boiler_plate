@@ -14,9 +14,6 @@ const config = {
       acquire: 25000,
       requestTimeout: 300000,
     },
-    dialectOptions: {
-      options: { encrypt: true },
-    },
   },
   test: {
     username: process.env.DB_USER_TEST,
@@ -53,9 +50,6 @@ const config = {
       acquire: 25000,
       requestTimeout: 300000,
     },
-    dialectOptions: {
-      options: { encrypt: true },
-    },
     logging: false,
   },
   production: {
@@ -72,9 +66,6 @@ const config = {
       idle: 25000,
       acquire: 25000,
       requestTimeout: 300000,
-    },
-    dialectOptions: {
-      options: { encrypt: true },
     },
     logging: false,
   },
